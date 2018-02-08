@@ -53,6 +53,14 @@ h1{
   color: var(--drk-txt);
   letter-spacing: .5em;
 }
+
+h2{
+  padding: 15px;
+  font-size: 24px;
+  color: var(--drk-txt);
+  letter-spacing: .15em;
+  text-align: center;
+}
 .feed{
     margin: 0 10%; 
 }
