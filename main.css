@@ -27,26 +27,64 @@ footer, header, hgroup, menu, nav, section {
 *, *:before, *:after {
   box-sizing: border-box;
 }
+:root {
+  --bg-light: #fbf6ee;
+  --drk-txt: #253C78;
+  --lt-txt: #2B59C3;
+  --bg-dark: #7892e7;
+  --accent: #D36582;
+}
+
+html{
+  background-color: var(--bg-dark);
+}
+body{
+  margin: 5% 5% 30px 5%; 
+  padding-bottom: 20px;
+  background-color: var(--bg-light);
+  font-family: Lato,"Open Sans","Helvetica Neue", sans-serif;
+  border-radius: 15px;
+}
 
 h1{
   padding: 40px;
-  border-bottom: 5px solid black;
   text-align: center;
-  text-size: 24px;
+  font-size: 44px;
+  color: var(--drk-txt);
+  letter-spacing: .5em;
 }
-.tweet{
-  padding: 10px;
-  
+.feed{
+    margin: 0 10%; 
+}
+.feed, .userDetail{
+  background-color: #8080802b;
+  padding-bottom: 3%;
+  border-radius: 15px;
+
 }
 
-.feed{
+.feed.withUser{
   float: left;
-  border: 8px solid black;
-  background: teal;
+  width: 50%;
+  margin-left: 2%;
+  margin-right: 0;
 }
-aside{
+
+.userDetail{
   float: right;
-  width: 32%;
-  border: 8px solid black;
-  background: grey;
+  width: 43%;
+  margin: 0 2%
+}
+
+.tweet{
+  padding: 10px;
+  margin: 0 5%;
+}
+
+.tweetTime{
+  font-size:.5em;
+  color: gray;
+}
+.fix {
+  clear: both;
 }
