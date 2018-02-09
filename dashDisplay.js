@@ -56,9 +56,11 @@ $('.feedContent').on('click',$('.tweet a'), function(event){
   $(".feed").addClass("withUser");
 
   var userName= $(event.target).data('name');
-  $userSection = $(`<aside class="userDetail" data-name=${userName}></aside>`);
-  $userSection.prepend($(`<h2> @${userName} </h2>` ));
-  $(".header").after($userSection);
+  $userDetail = $(`<aside class="userDetail" data-name=${userName}></aside>`);
+  $userDetail.append($("<a class='closeUser'> close </a>"));
+  $userDetail.append($(`<h2> @${userName} </h2>` ));
+
+  $(".header").after($userDetail);
   var userObj = {};
   userObj=streams.users[userName];
   for (var i=0; i<userObj.length; i++){
@@ -71,7 +73,12 @@ $('.feedContent').on('click',$('.tweet a'), function(event){
     ($(".userDetail h2")).after($tweet);
   }
   
+  $(".closeUser").on('click',function(){
+     $('.userDetail').remove();
+     $(".feed").removeClass("withUser");
+  });
 });
+
   
 });
 

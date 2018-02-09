@@ -73,15 +73,16 @@ h2{
 
 .feed.withUser{
   float: left;
-  width: 50%;
+  width: 47%;
   margin-left: 2%;
   margin-right: 0;
 }
 
 .userDetail{
   float: right;
-  width: 43%;
-  margin: 0 2%
+  width: 47%;
+  margin: 0 2%;
+  position: relative;
 }
 
 .tweet{
@@ -95,4 +96,22 @@ h2{
 }
 .fix {
   clear: both;
+}
+
+.tweet a {
+  text-decoration: none;
+  color: var(--drk-txt);
+}
+.tweet a:hover {
+  color: var(--lt-txt);
+}
+.closeUser{
+  position: absolute;
+  color: var(--drk-txt);
+  right: 3%;
+  top: 2px;
+  padding:2px;
+}
+.closeUser:hover{
+  color: var(--lt-txt);
 }
