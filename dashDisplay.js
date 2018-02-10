@@ -99,8 +99,10 @@ $(document).ready(function () {
 
   $('.startTweet').on('click', function () {
     $('input').slideDown();
-
-    $('.submit').on('click', function () {
+  });
+  
+    $('.submit').on('click', function (event) {
+      event.stopPropagation();
       var input = $('.tweetText').val();
       if (input) {
         writeTweet(input);
@@ -108,11 +110,9 @@ $(document).ready(function () {
         checkNewMessages();
       }
       else{
-        var $emptyMessage = $(`<div class = "emptyMessage">twittler only works if you share something</div>`);
-        $('.header').append($emptyMessage);
+        var $emptyMessage = $('.emptyMessage');
+        $emptyMessage.show();
         $emptyMessage.delay(1500).fadeOut('slow');
         }
     });
-  });
-
 });
