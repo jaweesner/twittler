@@ -1,10 +1,9 @@
 //TO DO
 /*
-make updates on every refresh to refresh formatting of past tweets
-add title to everything
 add tweeting ability
+Only show the most recent 20 tweets, expand section on click
 
-*/
+ */
 
 //Run Everything
 $(document).ready(function () {
@@ -16,92 +15,103 @@ $(document).ready(function () {
   var $feedContent = $(`<section class = "feedContent"></section>`);
   $feed.append($feedContent);
   $body.append($feed);
-  $body.append($("<div class='fix'><\div>)"))
-  ;
+  $body.append($("<div class='fix'><\div>)"));
   checkNewMessages();
 
-  
   //subsequent updates
   setInterval(checkNewMessages, 5000);
-  
 
-//helper Methods
-  
-/*
-Check and display tweets
-Assumes: index
-SideEffect: updates index to be index of last item in stream.home;
+  //helper Methods
 
-*/
-function checkNewMessages(){
-  var currStreamIndex = streams.home.length - 1;
-  var userDetailName = ($('.userDetail').length !==0) ? $('.userDetail').data('name') : null;
-  //update old tweets:
+  /*
+  Check and display tweets
+  Assumes: index
+  SideEffect: updates index to be index of last item in stream.home;
 
-  //Add new tweets
-  while (currStreamIndex >= index) {
-    var tweet = streams.home[index];
-    var $tweet = $('<section class = "tweet"></section>');
-    var content = `<a data-name=${tweet.user} href="#">@${tweet.user}</a>`+ ': ' + tweet.message;
-    var time = moment(tweet.created_at);
-    var formattedTime = time.format(`ddd, MMM Do YYYY, h:mm a`);
-    
-    //if matches open user panel, update there too
-    if (userDetailName === tweet.user){
-      var $userTweet = $('<section class = "userTweet tweet"></section>');
-      $userTweet.append($(`<p class="tweetContent">${tweet.message}</p>`));
-      $userTweet.append($(`<p class="tweetTime" title="${formattedTime}" data-time="${time}"> ${time.fromNow()} </p>`));
-      ($(".userDetail h2")).after($userTweet);
-    
+   */
+  function checkNewMessages() {
+    var currStreamIndex = streams.home.length - 1;
+    var userDetailName = ($('.userDetail').length !== 0) ? $('.userDetail').data('name') : null;
+
+    //Add new tweets
+    while (currStreamIndex >= index) {
+      var tweet = streams.home[index];
+      addSingleFeedTweet(tweet)
+
+      //if matches open user panel, update there too
+      if (userDetailName === tweet.user) {
+        addSingleUserTweet(tweet);
+      }
+
+      index++;
     }
-    $tweet.append($(`<p class="tweetContent"> ${content} </p>`));
+    //Update past elements to have relative times
+    var allTimeElements = $('.tweetTime');
+    for (var i = 0; i < allTimeElements.length; i++) {
+      $(allTimeElements[i]).text(moment($(allTimeElements[i]).data('time')).fromNow());
+    }
+  }
+
+  //handle clicking of user name and initial backfill of tweets
+
+  $('.feedContent').on('click', '.tweet a', function (event) {
+    //if user section already open, get rid of it
+    if ($('.userDetail').length !== 0) {
+      $('.userDetail').remove();
+    };
+
+    //change CSS of main feed to allow sidebar
+    $('*').addClass('withUser');
+
+    //insert basic sidebar framework
+    var userName = $(event.target).data('name');
+    $userDetail = $(`<aside class="userDetail" data-name=${userName}></aside>`);
+    $userDetail.append($(`<a class='closeUser'> close </a>`));
+    $userDetail.append($(`<h2> @${userName} </h2>`));
+    $('.header').after($userDetail);
+
+    //backfill user -specific tweets
+    var userObj = streams.users[userName];
+    for (var i = 0; i < userObj.length; i++) {
+      addSingleUserTweet(userObj[i]);
+    }
+    //Handles closing the user sidebar (in this function for scope reasons)
+    $(".closeUser").on('click', function () {
+      $('.userDetail').remove();
+      $('*').removeClass('withUser');
+    });
+  });
+
+  //Handles adding a single tweet to the user sidebar, given a tweet data object
+  function addSingleUserTweet(tweetData) {
+    var time = moment(tweetData.created_at);
+    var formattedTime = time.format(`ddd, MMM Do YYYY, h:mm a`);
+    var $userTweet = $('<section class = "userTweet tweet"></section>');
+    $userTweet.append($(`<p class="tweetContent">${tweetData.message}</p>`));
+    $userTweet.append($(`<p class="tweetTime" title="${formattedTime}" data-time="${time}"> ${time.fromNow()} </p>`));
+    ($(".userDetail h2")).after($userTweet);
+  }
+
+  //Handles adding a single tweet to the feed, given a tweet data object
+  function addSingleFeedTweet(tweetData) {
+    var time = moment(tweetData.created_at);
+    var formattedTime = time.format(`ddd, MMM Do YYYY, h:mm a`);
+    var $tweet = $('<section class = "tweet"></section>');
+    var content = `<a data-name=${tweetData.user} href="#">@${tweetData.user}</a>` + ': ' + tweetData.message;
+    $tweet.append($(`<p class="tweetContent">${content}</p>`));
     $tweet.append($(`<p class="tweetTime" title="${formattedTime}" data-time="${time}"> ${time.fromNow()} </p>`));
     $tweet.prependTo($feedContent);
-    index++;
   }
-    var allTimeElements = $('.tweetTime');
-    for(var i=0; i<allTimeElements.length;i++){
-    $(allTimeElements[i]).text(moment($(allTimeElements[i]).data('time')).fromNow());
-  }
-}
-
-
-//handle clicking of user name and initial backfill of tweets
-
-$('.feedContent').on('click','.tweet a', function(event){
-  event.stopPropagation();
-  if ($('.userDetail').length !==0){
-    $('.userDetail').remove();
-  };
+$('.startTweet').on('click',function(){
+  $('input').slideDown();
   
-  $('.feed').addClass('withUser');
-
-  var userName= $(event.target).data('name');
-  $userDetail = $(`<aside class="userDetail" data-name=${userName}></aside>`);
-  $userDetail.append($(`<a class='closeUser'> close </a>`));
-  $userDetail.append($(`<h2> @${userName} </h2>` ));
-
-  $('.header').after($userDetail);
-  var userObj = {};
-  userObj=streams.users[userName];
-  for (var i=0; i<userObj.length; i++){
-    var tweet = userObj[i];
-    var $tweet = $('<section class = "userTweet tweet"></section>');
-    var content = tweet.message;
-    var time = moment(tweet.created_at);
-    $tweet.append($(`<p class="tweetContent"> ${content} </p>`));
-    $tweet.append($(`<p class="tweetTime"> ${time.calendar()} </p>`));
-    ($(`.userDetail h2`)).after($tweet);
-  }
-  
-  
-  //Handles closing the user sidebar
-  $(".closeUser").on('click',function(){
-     $('.userDetail').remove();
-     $('.feed').removeClass('withUser');
-  });
+  $('.submit').on('click',function(){
+  writeTweet($('.tweetText').val());
+  $('.tweetText').val('');
+  checkNewMessages();
+});
 });
 
-  
+
 });
 

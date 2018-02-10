@@ -47,7 +47,7 @@ body{
 }
 
 h1{
-  padding: 40px;
+  padding: 40px 40px 10px 40px;
   text-align: center;
   font-size: 44px;
   color: var(--drk-txt);
@@ -115,4 +115,45 @@ h2{
 .closeUser:hover{
   color: var(--lt-txt);
   cursor: pointer;
+}
+
+.startTweet{
+  text-align: left;
+  color: var(--drk-txt);
+  padding-bottom: 5px;
+  margin-left: 10%;
+  margin-bottom: 5px;
+  width: 15%
+  
+}
+.startTweet.withUser{
+  margin-left: 2%;
+  
+}
+.startTweet:hover{
+  color: var(--lt-txt);
+  cursor: pointer;
+}
+input{
+  display: none;
+  border: none;
+}
+
+input.submit{
+  border-radius: 3px;
+  margin-right: 10%;
+  float:right;
+  width: 10%
+}
+input.submit.withUser{
+  margin-right: 2%;
+}
+
+input.tweetText{
+  margin-left: 10px;
+  border-bottom: 2px solid var(--bg-dark);
+  background-color: var(--bg-light);
+  width: 55%;
+  text-align: center;
+  color: var(--drk-txt);
 }
