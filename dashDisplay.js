@@ -1,9 +1,3 @@
-//TO DO
-/*
-add tweeting ability
-Only show the most recent 20 tweets, expand section on click
-
- */
 
 //Run Everything
 $(document).ready(function () {
@@ -15,7 +9,7 @@ $(document).ready(function () {
   var $feedContent = $(`<section class = "feedContent"></section>`);
   $feed.append($feedContent);
   $body.append($feed);
-  $body.append($("<div class='fix'><\div>)"));
+  $body.append($("<div class='fix'></div>)"));
   checkNewMessages();
 
   //subsequent updates
@@ -102,16 +96,23 @@ $(document).ready(function () {
     $tweet.append($(`<p class="tweetTime" title="${formattedTime}" data-time="${time}"> ${time.fromNow()} </p>`));
     $tweet.prependTo($feedContent);
   }
-$('.startTweet').on('click',function(){
-  $('input').slideDown();
-  
-  $('.submit').on('click',function(){
-  writeTweet($('.tweetText').val());
-  $('.tweetText').val('');
-  checkNewMessages();
-});
-});
 
+  $('.startTweet').on('click', function () {
+    $('input').slideDown();
+
+    $('.submit').on('click', function () {
+      var input = $('.tweetText').val();
+      if (input) {
+        writeTweet(input);
+        $('.tweetText').val('');
+        checkNewMessages();
+      }
+      else{
+        var $emptyMessage = $(`<div class = "emptyMessage">twittler only works if you share something</div>`);
+        $('.header').append($emptyMessage);
+        $emptyMessage.delay(1500).fadeOut('slow');
+        }
+    });
+  });
 
 });
-

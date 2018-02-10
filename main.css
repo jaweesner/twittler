@@ -116,20 +116,19 @@ h2{
   color: var(--lt-txt);
   cursor: pointer;
 }
-
+.tweetEntry{
+  margin: 0 10%;
+}
+.tweetEntry.withUser{
+  margin: 0 2%;
+}
 .startTweet{
   text-align: left;
   color: var(--drk-txt);
-  padding-bottom: 5px;
-  margin-left: 10%;
-  margin-bottom: 5px;
-  width: 15%
-  
+  width: 20%;
+  display:  inline-block;
 }
-.startTweet.withUser{
-  margin-left: 2%;
-  
-}
+
 .startTweet:hover{
   color: var(--lt-txt);
   cursor: pointer;
@@ -141,19 +140,20 @@ input{
 
 input.submit{
   border-radius: 3px;
-  margin-right: 10%;
-  float:right;
-  width: 10%
-}
-input.submit.withUser{
-  margin-right: 2%;
+  width: 15%;
+  float: right;
 }
 
 input.tweetText{
-  margin-left: 10px;
   border-bottom: 2px solid var(--bg-dark);
   background-color: var(--bg-light);
-  width: 55%;
+  width: 60%;
   text-align: center;
   color: var(--drk-txt);
+}
+
+.emptyMessage{
+  color: var(--accent);
+  text-align: center;
+}
 }
